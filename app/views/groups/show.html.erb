@@ -1,0 +1,32 @@
+<a href="/sessions/logout" id="logout"><button>Log Out</button></a>
+<a href="/groups" id="dashboard"><button>Dashboard</button></a>
+<hr>
+
+<h3><%= @group.name %></h3>
+<% if Membership.find_by_user_id_and_group_id(current_user.id,@group.id)%>
+	<form action='/memberships' method='post'>
+    	<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+    	<input type='hidden' name='_method' value='delete'>
+    	<input type='hidden' name='group_id' value='<%= @group.id %>'>
+    	<input type='submit' name='leave_group' value='Leave Group'>
+	</form>
+<% else %>
+	<form action='/memberships' method='post'>
+    	<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+    	<input type='hidden' name='group_id' value='<%= @group.id %>'>
+    	<input type='submit' name='join_group' value='Join Group'>
+	</form>
+<% end %>
+<p><%= @group.description %></p>
+<p></p>
+<p></p>
+<p></p>
+<h4>Created By: <%= @group.user.first_name %> <%= @group.user.last_name %></h4>
+<h4>Members:</h4>
+<% @group.users.each do |member| %>
+	<p><%= member.first_name %> <%= member.last_name %></p>
+<% end %>
+
+<% if flash[:alert] %>
+	<%= flash[:alert] %>
+<% end %>

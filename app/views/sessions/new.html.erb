@@ -1,0 +1,32 @@
+<h1>Welcome to Groups!</h1>
+<p>Please register, or sign in</p>
+<div>
+	<h3>Register</h3>
+	<form action="/users" method="POST">
+	    <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+	    <p>First Name: <input type="text" name="user[first_name]"></p>
+	    <p>Last Name: <input type="text" name="user[last_name]"></p>
+		<p>Email <input type="text" name="user[email]"></p>
+		<p>Password <input type="text" name="user[password]"></p>
+		<p>Password Confirmation <input type="text" name="user[password_confirmation]"></p>
+		<p><input type="submit" name="Register" id="Register"></p>
+	</form>
+</div>
+<hr>
+<form action="/sessions/login" method="POST">
+	<input type="hidden" name="authenticity_token" value = "<%= form_authenticity_token %>" >
+	<p>Email: <input type="text" name="email"></p>
+	<p>Password: <input type="text" name="password"></p>
+	<p><input type="submit" name="Login" id="Login"></p>
+</form>
+<hr>
+
+<% if flash["loginError"] %>
+	<%= flash["loginError"] %>
+<% end %>
+
+<% if flash["errors"] %>
+	<% flash["errors"].each do |error| %>
+		<p>* <%= error %></p>
+	<% end %>
+<% end %>

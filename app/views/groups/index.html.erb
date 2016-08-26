@@ -1,0 +1,40 @@
+<a href="/sessions/logout" id="logout"><button>Log Out</button></a>
+<hr>
+<h2>Hi <%= current_user.first_name %> <%= current_user.last_name %>!</h2>
+
+<p>Here are the groups you may join</p>
+<% @groups.each do |group| %>
+	<h3><a href="/groups/<%=group.id%>"><%=group.name%></a></h3>
+	<p>Members: <%=group.memberships.count%></p>
+	<p>Description: <%=group.description%></p>
+	<% if current_user == group.user %>
+    	<form action='/groups/<%= group.id %>' method='post'>
+    		<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+    		<input type='hidden' name='user_id' value='<%= current_user.id %>'>
+    		<input type='hidden' name='_method' value='delete'>
+    		<input type='submit' name='Delete' value='Delete'>
+		</form>
+  	<% end %>
+<% end %>
+
+
+<hr>
+<p>Create your own group</p>
+<form action="/groups" method="POST">
+	<input type="hidden" name="authenticity_token" value = "<%= form_authenticity_token %>" >
+	<p>Name: <input type="text" name="group_name"></p>
+	<p>Description: <input type="text" name="group_description"></p>
+	<p><input type="submit" name="Submit" id="Submit"></p>
+</form>
+
+<% if flash["notice"] %>
+	<%= flash["notice"] %>
+<% end %>
+
+<% if flash["errors"] %>
+	<% flash["errors"].each do |error| %>
+		<p>* <%= error %></p>
+	<% end %>
+<% end %>
+
+<hr>
